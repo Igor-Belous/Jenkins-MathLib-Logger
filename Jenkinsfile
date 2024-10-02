@@ -13,14 +13,16 @@ pipeline {
             steps {
                 dir('src') {
                      sh 'make test'
-                    sh 'cat test_reports/results.xml' // Вывод содержимого файла отчета      
+                     sh 'cat test_reports/results.xml' // Вывод содержимого файла отчета
+                     junit 'test_reports/results.xml'
+      
                 }
             }
         }
     }
-    post {
-        always {
-            junit 'src/test_reports/results.xml'
-        }
-    }
+    // post {
+    //     always {
+    //         junit 'src/test_reports/results.xml'
+    //     }
+    // }
 }
