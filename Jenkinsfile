@@ -12,8 +12,8 @@ pipeline {
         stage('Test') {
             steps {
                 dir('src') {
-                    sh 'make test'
-                    sh 'ls -l test_reports' // Проверка наличия файла отчета
+                     sh 'make test'
+                    sh 'cat test_reports/results.xml' // Вывод содержимого файла отчета      
                 }
             }
         }
