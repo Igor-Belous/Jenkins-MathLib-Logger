@@ -54,3 +54,12 @@ endif
 
 # Цель для пересборки проекта
 rebuild: clean all
+
+# Создание директории для отчетов
+test_reports:
+	mkdir -p test_reports
+
+# Очистка сгенерированных файлов
+clean:
+	rm -rf all_tests_s21 *.o *.a unit_tests/*.gc* unit_tests/*.info
+	rm -rf test_reports/
