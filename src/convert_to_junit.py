@@ -30,7 +30,7 @@ def convert_to_junit(input_files, output_file):
             testcase = ET.SubElement(testsuite, 'testcase')
 
             # Установка атрибута classname
-            classname = "YourTestClassName"  # Укажите имя класса, в котором находятся тесты
+            classname = "MathClass"  # Укажите имя класса, в котором находятся тесты
             testcase.set('classname', classname)  # Устанавливаем имя класса
 
             # Получение уникального имени теста и времени выполнения
