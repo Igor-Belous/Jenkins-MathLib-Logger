@@ -19,7 +19,7 @@ def convert_to_junit(input_files, output_file):
         root = tree.getroot()
 
         # Извлечение названия сьюты
-        suite_name = root.get('name', 'machina')  # Используйте значение атрибута name, если доступно
+        suite_name = root.get('name', 'DefaultSuiteName')  # Используйте значение атрибута name, если доступно
 
         # Создание элемента test suite
         testsuite = ET.SubElement(junit_root, 'testsuite')
@@ -34,10 +34,10 @@ def convert_to_junit(input_files, output_file):
             testcase.set('classname', classname)  # Устанавливаем имя класса
 
             # Получение уникального имени теста и времени выполнения
-            test_id = test.find('ns:id', namespace).text
+            test_fn = test.find('ns:fn', namespace).text
             duration = test.find('ns:duration', namespace).text
             
-            testcase.set('name', test_id)  # Устанавливаем уникальное имя теста
+            testcase.set('name', test_fn)  # Устанавливаем уникальное имя теста
             testcase.set('time', duration)  # Устанавливаем время выполнения теста
 
             # Проверка на успешность теста
