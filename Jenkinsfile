@@ -13,8 +13,8 @@ pipeline {
             steps {
                 dir('src') {
                      sh 'make test'
-                     sh 'cat test_reports/results.xml' // Вывод содержимого файла отчета
-                     junit 'test_reports/results.xml'
+                     sh 'cat **test_reports/**.xml' // Вывод содержимого файла отчета
+                     junit '**test_reports/**.xml'
       
                 }
             }
