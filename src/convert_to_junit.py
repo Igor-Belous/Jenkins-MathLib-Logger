@@ -1,45 +1,48 @@
 import xml.etree.ElementTree as ET
 import os
+import glob
 
-# Определение пути к файлу results.xml
-file_path = os.path.join('test_reports', 'results.xml')
+# Путь к директории с результатами тестов
+results_dir = 'test_reports'
+output_file = os.path.join(results_dir, 'junit_results.xml')
 
-# Открытие и парсинг исходного results.xml
-tree = ET.parse(file_path)
-root = tree.getroot()
+# Пространство имен
+namespace = {'ns': 'http://check.sourceforge.net/ns'}
 
-# Создание нового дерева JUnit-совместимого XML
-testsuites = ET.Element('testsuites')
-testsuite = ET.SubElement(testsuites, 'testsuite', name='s21_fabs', tests='0', failures='0', errors='0', skipped='0')
+# Функция для конвертации XML в формат JUnit
+def convert_to_junit(input_files, output_file):
+    # Создание корневого элемента JUnit
+    junit_root = ET.Element('testsuites')
 
-# Обработка каждого теста в исходном XML
-test_count = 0
-failure_count = 0
+    for input_file in input_files:
+        tree = ET.parse(input_file)
+        root = tree.getroot()
 
-for test in root.findall('.//test'):
-    test_count += 1
-    test_id = test.find('id').text
-    description = test.find('description').text
-    result = test.get('result')
-    
-    # Создание элемента testcase
-    test_element = ET.SubElement(testsuite, 'testcase', classname='s21_fabs', name=test_id)
-    
-    # Проверка результата теста и добавление failure, если необходимо
-    if result != 'success':
-        failure = ET.SubElement(test_element, 'failure', message='Test failed')
-        failure.text = f'Test {description} failed'
+        # Добавляем информацию о каждом тесте в JUnit формат
+        for test in root.findall('.//ns:test', namespace):
+            testcase = ET.SubElement(junit_root, 'testcase')
 
-# Обновляем атрибуты testsuite
-testsuite.set('tests', str(test_count))
-testsuite.set('failures', str(failure_count))
-# Можно добавить ошибки и пропуски, если они есть
+            # Получение информации о тесте
+            testcase.set('name', test.find('ns:id', namespace).text)
+            testcase.set('time', test.find('ns:duration', namespace).text)
 
-# Определение пути для сохранения JUnit XML
-output_path = os.path.join('test_reports', 'junit_results.xml')
+            # Проверка на успешность теста
+            if test.get('result') == 'success':
+                # Добавляем успешный тест
+                ET.SubElement(testcase, 'system-out').text = test.find('ns:message', namespace).text
+            else:
+                # Добавляем неуспешный тест
+                failure = ET.SubElement(testcase, 'failure')
+                failure.set('message', 'Test failed')
+                failure.text = test.find('ns:message', namespace).text
 
-# Сохранение нового JUnit XML
-tree = ET.ElementTree(testsuites)
-tree.write(output_path, encoding='utf-8', xml_declaration=True)
+    # Сохранение нового файла в формате JUnit
+    junit_tree = ET.ElementTree(junit_root)
+    junit_tree.write(output_file, xml_declaration=True, encoding='utf-8')
 
-print(f"JUnit-совместимый отчет сохранен в: {output_path}")
+# Получаем все файлы results*.xml
+input_files = glob.glob(os.path.join(results_dir, 'results*.xml'))
+
+# Вызов функции конвертации
+convert_to_junit(input_files, output_file)
+print(f'Файл успешно сконвертирован и сохранен как {output_file}')
