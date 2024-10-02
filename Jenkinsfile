@@ -4,7 +4,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('src') {
-                    sh 'make s21_math.a'
+                    sh 'make s21_math.a'  // Сборка библиотеки
                 }
             }
         }
@@ -12,17 +12,27 @@ pipeline {
         stage('Test') {
             steps {
                 dir('src') {
-                     sh 'make test'
-                     sh 'cat ./test_reports/*.xml' // Вывод содержимого файла отчета
-                     junit './test_reports/*.xml'
-      
+                    sh 'make test'  // Запуск тестов, которые создают results.xml в test_reports
+                }
+            }
+        }
+
+        stage('Convert to JUnit Format') {
+            steps {
+                dir('src') {
+                    // Запуск Python скрипта для конвертации results.xml в JUnit-совместимый формат
+                    sh 'python3 convert_to_junit.py'
+                }
+            }
+        }
+
+        stage('Publish Test Results') {
+            steps {
+                dir('src') {
+                    // Архивирование итогового JUnit отчета
+                    junit 'test_reports/junit_results.xml'
                 }
             }
         }
     }
-    // post {
-    //     always {
-    //         junit 'src/test_reports/results.xml'
-    //     }
-    // }
 }
