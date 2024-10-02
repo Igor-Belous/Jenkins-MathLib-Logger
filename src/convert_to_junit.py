@@ -19,7 +19,7 @@ def convert_to_junit(input_files, output_file):
         root = tree.getroot()
 
         # Извлечение названия сьюты
-        suite_name = root.get('name', 'DefaultSuiteName')  # Используйте значение атрибута name, если доступно
+        suite_name = root.get('name', 'machina')  # Используйте значение атрибута name, если доступно
 
         # Создание элемента test suite
         testsuite = ET.SubElement(junit_root, 'testsuite')
