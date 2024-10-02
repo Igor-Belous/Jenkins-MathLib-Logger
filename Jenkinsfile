@@ -19,8 +19,7 @@ pipeline {
     }
     post {
         always {
-            // Отчет JUnit
-            junit 'src/test_reports/*.xml'
+            junit 'src/test_reports/results.xml'
         }
     }
 }
