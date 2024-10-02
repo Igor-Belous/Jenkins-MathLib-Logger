@@ -37,7 +37,7 @@ else
 endif
 	echo "Running tests..."
 	CK_XML=yes CK_OUTPUT=./test_reports ./all_tests_s21 || { echo "Tests failed"; exit 1; }
-
+	xsltproc http://check.sourceforge.net/xml/check_unittest.xslt test_reports/results.xml > test_reports/junit_results.xml
 
 # Сборка тестов с покрытием кода и генерация HTML отчета
 gcov_report: test_reports
@@ -54,13 +54,3 @@ endif
 
 # Цель для пересборки проекта
 rebuild: clean all
-
-# Создание директории для отчетов
-test_reports:
-	mkdir -p test_reports
-
-# Очистка сгенерированных файлов
-clean:
-	rm -rf all_tests_s21 *.o *.a unit_tests/*.gc* unit_tests/*.info
-	rm -rf test_reports/
-
