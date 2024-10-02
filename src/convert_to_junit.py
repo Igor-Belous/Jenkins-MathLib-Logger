@@ -18,31 +18,37 @@ def convert_to_junit(input_files, output_file):
         tree = ET.parse(input_file)
         root = tree.getroot()
 
-        # Создание элемента testsuite для каждой оригинальной сюиты
-        for suite in root.findall('.//ns:suite', namespace):
-            suite_title = suite.find('ns:title', namespace).text
-            testsuite = ET.SubElement(junit_root, 'testsuite')
-            testsuite.set('name', suite_title)  # Устанавливаем имя для тестовой сюиты
+        # Извлечение названия сьюты
+        suite_name = root.get('name', 'DefaultSuiteName')  # Используйте значение атрибута name, если доступно
 
-            # Добавляем информацию о каждом тесте в JUnit формат
-            for test in suite.findall('.//ns:test', namespace):
-                testcase = ET.SubElement(testsuite, 'testcase')
+        # Создание элемента test suite
+        testsuite = ET.SubElement(junit_root, 'testsuite')
+        testsuite.set('name', suite_name)  # Устанавливаем название сьюты
 
-                # Установка атрибута classname
-                classname = "YourTestClassName"  # Укажите имя класса, в котором находятся тесты
-                testcase.set('classname', classname)  # Устанавливаем имя класса
-                testcase.set('name', test.find('ns:id', namespace).text)
-                testcase.set('time', test.find('ns:duration', namespace).text)
+        # Добавляем информацию о каждом тесте в JUnit формат
+        for test in root.findall('.//ns:test', namespace):
+            testcase = ET.SubElement(testsuite, 'testcase')
 
-                # Проверка на успешность теста
-                if test.get('result') == 'success':
-                    # Добавляем успешный тест
-                    ET.SubElement(testcase, 'system-out').text = test.find('ns:message', namespace).text
-                else:
-                    # Добавляем неуспешный тест
-                    failure = ET.SubElement(testcase, 'failure')
-                    failure.set('message', 'Test failed')
-                    failure.text = test.find('ns:message', namespace).text
+            # Установка атрибута classname
+            classname = "YourTestClassName"  # Укажите имя класса, в котором находятся тесты
+            testcase.set('classname', classname)  # Устанавливаем имя класса
+
+            # Получение уникального имени теста и времени выполнения
+            test_id = test.find('ns:id', namespace).text
+            duration = test.find('ns:duration', namespace).text
+            
+            testcase.set('name', test_id)  # Устанавливаем уникальное имя теста
+            testcase.set('time', duration)  # Устанавливаем время выполнения теста
+
+            # Проверка на успешность теста
+            if test.get('result') == 'success':
+                # Добавляем успешный тест
+                ET.SubElement(testcase, 'system-out').text = test.find('ns:message', namespace).text
+            else:
+                # Добавляем неуспешный тест
+                failure = ET.SubElement(testcase, 'failure')
+                failure.set('message', 'Test failed')
+                failure.text = test.find('ns:message', namespace).text
 
     # Сохранение нового файла в формате JUnit
     junit_tree = ET.ElementTree(junit_root)
