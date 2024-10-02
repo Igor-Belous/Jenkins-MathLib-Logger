@@ -29,7 +29,7 @@ s21_math.a: $(SRC)
 	ar rc s21_math.a $(OBJ)
 
 # Запуск тестов с генерацией отчетов JUnit XML
-test: s21_math.a test_reports
+test: s21_math.a test_reports 
 ifeq ($(OS), Darwin)
 	$(CC) $(STDFLAGS) $(LDFLAGS) $(ALL_C_TEST) -o all_tests_s21 $(LIBS) s21_math.a || { echo "Compilation failed"; exit 1; }
 else
@@ -37,7 +37,7 @@ else
 endif
 	echo "Running tests..."
 	CK_XML=yes CK_OUTPUT=./test_reports ./all_tests_s21 || { echo "Tests failed"; exit 1; }
-
+	python3 convert_to_junit.py
 
 # Цель для пересборки проекта
 rebuild: clean all
