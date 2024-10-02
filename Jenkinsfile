@@ -19,10 +19,8 @@ pipeline {
 
         stage('Convert to JUnit Format') {
             steps {
-                dir('src') {
                     // Запуск Python скрипта для конвертации results.xml в JUnit-совместимый формат
                     sh 'python3 convert_to_junit.py'
-                }
             }
         }
 
