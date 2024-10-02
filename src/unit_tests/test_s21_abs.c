@@ -14,7 +14,7 @@ START_TEST(test_ceil) {
   const int testCase[16] = {
       INT_MAX, INT_MIN, 9876543, 123456789, -123456788, 5,  -5,     987654321,
       0,       -1,      1,       -42,       -50,        -6, -99999, 91};
-  ck_assert_int_eq(s21_abs(testCase[_i]), -abs(testCase[_i]))
+  ck_assert_int_eq(s21_abs(testCase[_i]), abs(testCase[_i]));
 }
 END_TEST
 
