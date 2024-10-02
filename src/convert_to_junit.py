@@ -13,6 +13,7 @@ namespace = {'ns': 'http://check.sourceforge.net/ns'}
 def convert_to_junit(input_files, output_file):
     # Создание корневого элемента JUnit
     junit_root = ET.Element('testsuites')
+    junit_root.set('name', 'Test Suites')  # Устанавливаем имя для тестовuites
 
     for input_file in input_files:
         tree = ET.parse(input_file)
@@ -22,7 +23,9 @@ def convert_to_junit(input_files, output_file):
         for test in root.findall('.//ns:test', namespace):
             testcase = ET.SubElement(junit_root, 'testcase')
 
-            # Получение информации о тесте
+            # Установка атрибута classname
+            classname = "YourTestClassName"  # Укажите имя класса, в котором находятся тесты
+            testcase.set('classname', classname)  # Устанавливаем имя класса
             testcase.set('name', test.find('ns:id', namespace).text)
             testcase.set('time', test.find('ns:duration', namespace).text)
 
