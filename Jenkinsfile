@@ -1,21 +1,21 @@
 pipeline {
     agent any
     stages {
-        // stage('Build') {
-        //     steps {
-        //         dir('src') {
-        //             sh 'make s21_math.a'  // Сборка библиотеки
-        //         }
-        //     }
-        // }
+        stage('Build') {
+            steps {
+                dir('src') {
+                    sh 'make s21_math.a'  // Сборка библиотеки
+                }
+            }
+        }
 
-        // stage('Test') {
-        //     steps {
-        //         dir('src') {
-        //             sh 'make test'  // Запуск тестов, которые создают results.xml в test_reports
-        //         }
-        //     }
-        // }
+        stage('Test') {
+            steps {
+                dir('src') {
+                    sh 'make test'  // Запуск тестов, которые создают results.xml в test_reports
+                }
+            }
+        }
 
 
 
