@@ -8,11 +8,12 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Test') {
             steps {
                 dir('src') {
                     sh 'make test'
+                    sh 'ls -l test_reports' // Проверка наличия файла отчета
                 }
             }
         }
