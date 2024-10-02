@@ -36,7 +36,7 @@ else
 	$(CC) $(STDFLAGS) $(LDFLAGS) $(ALL_C_TEST) -o all_tests_s21 $(LIBS) $(UBUNTU_FLAGS) s21_math.a || { echo "Compilation failed"; exit 1; }
 endif
 	echo "Running tests..."
-	CK_XML=yes CK_OUTPUT=./test_reports ./all_tests_s21 || { echo "Tests failed"; exit 1; }
+	CK_XML=yes CK_OUTPUT= /test_reports/ ./all_tests_s21 || { echo "Tests failed"; exit 1; }
 
 # Сборка тестов с покрытием кода и генерация HTML отчета
 gcov_report: test_reports
