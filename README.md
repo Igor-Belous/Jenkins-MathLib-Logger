@@ -26,9 +26,11 @@ tan
 
 ### Процесс реализации
 1. Добавить вывод библиотеки check.h в .xml в makefile (цель тест)
+
 ![alt text](images/image.png)
 
 в файле `all_tests_s21.c` добавить вывод всех suite в .xml
+
 ![alt text](images/image-1.png)
 
 2. Добавить конвертацию полученных results*.xml в формат JUnit для Jenkins c помощью питон скрипта `convert_to_junit.py`
@@ -40,7 +42,8 @@ tan
 4. Добавление webhook на GitHub для автоматизации сборки по push
 ![alt text](images/image-4.png)
 
-5. Вывод результатов тестов в Jenkins после каждой сборки
+5. Вывод результатов тестов в Jenkins после каждого commit
+
 ![alt text](images/image-5.png)
 
 
