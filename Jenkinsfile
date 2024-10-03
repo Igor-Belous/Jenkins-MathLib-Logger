@@ -29,7 +29,7 @@ pipeline {
     post {
         always {
             dir('src') {
-                sh 'make clean'  // Очистка
+                sh 'make clean'  // Очистка объект
             }
         }
     }
