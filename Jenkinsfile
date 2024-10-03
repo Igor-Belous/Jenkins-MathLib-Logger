@@ -17,14 +17,19 @@ pipeline {
             }
         }
 
-
-
         stage('Publish Test Results') {
             steps {
                 dir('src') {
-                    // Архивирование итогового JUnit отчета
                     junit 'test_reports/junit_results.xml'
                 }
+            }
+        }
+    }
+
+    post {
+        always {
+            dir('src') {
+                sh 'make clean'  // Очистка после завершения пайплайна
             }
         }
     }
