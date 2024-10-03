@@ -20,7 +20,7 @@ pipeline {
         stage('Publish Test Results') {
             steps {
                 dir('src') {
-                    junit 'test_reports/junit_results.xml' 
+                    junit 'test_reports/junit_results.xml' // Публицация результатов тестирования JUnit
                 }
             }
         }
@@ -29,7 +29,7 @@ pipeline {
     post {
         always {
             dir('src') {
-                sh 'make clean'  // Очистка объект
+                sh 'make clean'  // Очистка 
             }
         }
     }
